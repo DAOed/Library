@@ -1,0 +1,98 @@
+<template>
+  <div class="container">
+    <div class="item">
+      <div class="item-inside">
+        <app-loader v-if="loading" />
+        <div
+          v-else
+          class="dual-grid"
+        >
+          <div class="dual-grid-two">
+            <content-section
+              :author-data="authorData"
+              :item-data="itemData"
+            />
+          </div>
+          <div
+            class="dual-grid-one"
+            style="margin-left: 2rem; margin-right: 0"
+          >
+            <aside-section
+              :author-data="authorData"
+              :item-data="itemData"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import AsideSection from "./Aside"
+import ContentSection from "./Content"
+
+import appLoader from "@components/loader"
+
+import { getPublicFile, getFileMeta } from "@lib/utils"
+
+import { mapGetters } from "vuex"
+
+export default {
+  name: "Item",
+  components: {
+    AsideSection,
+    ContentSection,
+    appLoader
+  },
+  data: () => ({
+    itemData: {},
+    loading: true,
+    authorData: {}
+  }),
+  computed: {
+    ...mapGetters([
+      "profileData"
+    ])
+  },
+  async mounted () {
+    let urlData = this.$route.query.uri
+    if (!urlData) this.$router.push("/")
+
+    urlData = window.atob(urlData)
+
+    const parts = urlData.split("/")
+    const username = parts[0]
+    const category = parts[1]
+    const fileKey = parts[2]
+
+    // first load item meta data
+    const itemData = await getFileMeta({ username, category, fileKey })
+    this.itemData = itemData
+    document.title = itemData.name + " - DAOed Library"
+    // console.log("itemData", itemData)
+
+    // now load author data
+    let authorData
+    if (this.profileData.username === username) {
+      authorData = this.profileData
+    } else {
+      authorData = await getPublicFile({ username, path: "library/profile" })
+      authorData = JSON.parse(authorData || "{}")
+    }
+    this.authorData = authorData
+    // console.log("authorData", authorData)
+
+    this.loading = false
+  }
+}
+</script>
+
+<style scoped>
+.item {
+  min-height: 60vh;
+}
+.item-inside {
+  width: 100%;
+}
+</style>
