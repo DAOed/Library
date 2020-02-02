@@ -19,9 +19,10 @@ export const loadProfile = async () => {
     let userData = store.getters.userData
     let profile = userData.profile || {}
     let name = profile.name || userData.username
+    let username = userData.username
     let bio = profile.description || "Author has not written about themselves yet."
 
-    await updateProfile({ name, bio })
+    await updateProfile({ name, bio, username })
   }
 }
 

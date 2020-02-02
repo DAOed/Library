@@ -6,7 +6,7 @@
         <span
           style="margin-right: 0.5rem"
           class="s-120"
-        >{{ authorData.name }}</span>
+        >{{ authorData.name || authorData.username }}</span>
         <zi-tag> {{ authorData.type }} </zi-tag>
       </div>
     </div>
@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     avatar () {
-      let avatar = initialsAvatar(this.authorData.name || "??")
+      let avatar = initialsAvatar(this.authorData.name || this.authorData.username)
       avatar.style.width = "5.5rem"
       avatar.style.height = "5.5rem"
       return avatar
