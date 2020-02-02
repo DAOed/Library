@@ -68,24 +68,28 @@ export default {
     this.loading = true
     let username = this.username
 
-    let authorData
-    if (this.profileData.username === username) {
-      authorData = this.profileData
-    } else {
-      authorData = await getPublicFile({ username, path: "library/profile" })
-      authorData = authorData ? JSON.parse(authorData) : null
-    }
-
-    this.loading = false
-
-    if (authorData) {
-      this.authorData = authorData
-      // now load stats
-      let docStats = await getDocStats({ username })
-      this.categories = docStats.categories
-    } else {
-      this.$Toast.warning("Sorry, nothing found for user")
+    if (!username) {
       this.$router.push("/")
+    } else {
+      let authorData
+      if (this.profileData.username === username) {
+        authorData = this.profileData
+      } else {
+        authorData = await getPublicFile({ username, path: "library/profile" })
+        authorData = authorData ? JSON.parse(authorData) : null
+      }
+
+      this.loading = false
+
+      if (authorData) {
+        this.authorData = authorData
+        // now load stats
+        let docStats = await getDocStats({ username })
+        this.categories = docStats.categories
+      } else {
+        this.$Toast.warning("Sorry, nothing found for user")
+        this.$router.push("/")
+      }
     }
   },
   methods: {

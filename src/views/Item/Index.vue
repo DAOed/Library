@@ -60,6 +60,7 @@ export default {
     if (!urlData) this.$router.push("/")
 
     urlData = window.atob(urlData)
+    if (!urlData) this.$router.push("/")
 
     const parts = urlData.split("/")
     const username = parts[0]

@@ -59,7 +59,7 @@ export default {
     let category = this.$route.query.category
 
     if (!username || !category) {
-      this.$router.push("/collection")
+      this.$router.push("/")
     } else {
       this.title = capitalize(category) + " reads"
 
