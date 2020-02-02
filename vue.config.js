@@ -25,7 +25,7 @@ module.exports = {
         plugins: [
           new PrerenderSpaPlugin({
             staticDir: path.join(__dirname, 'dist'),
-            routes: [ "/", "/dashboard", "/files", "/starred", "/trash", "/console", "/about", "/faqs", "/login", "/settings"],
+            routes: [ "/", "/reads", "/collection", "/item", "/upload", "/account", "/author", "/about", "/faqs", "/account", "/settings"],
             indexPath: path.join(__dirname, 'dist', 'index.html'),
             renderer: new Renderer({
               injectProperty: '__PRERENDER_INJECTED',
