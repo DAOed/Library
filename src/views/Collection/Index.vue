@@ -47,7 +47,7 @@ export default {
       "userData"
     ]),
     categories () {
-      return this.docStats.categories || []
+      return this.docStats.categories || {}
     }
   },
   methods: {

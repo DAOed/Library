@@ -31,9 +31,9 @@ export default {
       default: ""
     },
     collection: {
-      type: Array,
+      type: Object,
       default: () => {
-        return []
+        return {}
       }
     }
   },
