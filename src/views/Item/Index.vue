@@ -64,10 +64,10 @@ export default {
     const parts = urlData.split("/")
     const username = parts[0]
     const category = parts[1]
-    const fileKey = parts[2]
+    const key = parts[2]
 
     // first load item meta data
-    const itemData = await getFileMeta({ username, category, fileKey })
+    const itemData = await getFileMeta({ username, category, key })
     this.itemData = itemData
     document.title = itemData.name + " - DAOed Library"
     // console.log("itemData", itemData)
