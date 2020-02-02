@@ -13,9 +13,16 @@ export const loadProfile = async () => {
     console.log(err)
   }
 
-  if (!profileData) profileData = {}
+  if (profileData) {
+    store.dispatch("profileData", JSON.parse(profileData))
+  } else {
+    let userData = store.getters.userData
+    let profile = userData.profile || {}
+    let name = profile.name || userData.username
+    let bio = profile.description || "Author has not written about themselves yet."
 
-  store.dispatch("profileData", JSON.parse(profileData))
+    await updateProfile({ name, bio })
+  }
 }
 
 export const updateProfile = async (profile) => {
