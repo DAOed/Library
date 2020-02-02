@@ -54,7 +54,7 @@ export default {
     loading: false,
     active: "About",
     authorData: {},
-    categories: {}
+    categories: []
   }),
   computed: {
     ...mapGetters([
@@ -85,7 +85,7 @@ export default {
         this.authorData = authorData
         // now load stats
         let docStats = await getDocStats({ username })
-        this.categories = docStats.categories
+        this.categories = docStats.categories || []
       } else {
         this.$Toast.warning("Sorry, nothing found for user")
         this.$router.push("/")

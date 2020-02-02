@@ -75,7 +75,7 @@ export default {
   },
   computed: {
     avatar () {
-      let avatar = initialsAvatar(this.authorData.username)
+      let avatar = initialsAvatar(this.authorData.username || "??")
       avatar.style.width = "4.5rem"
       avatar.style.height = "4.5rem"
       return avatar

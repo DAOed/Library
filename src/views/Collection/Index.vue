@@ -47,11 +47,8 @@ export default {
       "userData"
     ]),
     categories () {
-      return this.docStats.categories
+      return this.docStats.categories || []
     }
-  },
-  async mounted () {
-    console.log(this.docStats, this.categories)
   },
   methods: {
     openCategory (item) {
