@@ -54,17 +54,17 @@ export const newFile = async (file, fileContent) => {
   if (!docStats.types) docStats.types = {}
   if (!docStats.categories) docStats.categories = {}
 
-  let targetTypeData = docStats.types[file.type]
-  let targetCategoryData = docStats.categories[file.category]
+  const targetTypeData = docStats.types[file.type]
+  const targetCategoryData = docStats.categories[file.category]
 
   const newDocStats = {
     types: {
       ...docStats.types,
-      [file.type]: targetTypeData ? targetTypeData++ : 1
+      [file.type]: (targetTypeData || 0) + 1
     },
     categories: {
       ...docStats.category,
-      [file.category]: targetCategoryData ? targetCategoryData++ : 1
+      [file.category]: (targetCategoryData || 0) + 1
     }
   }
 
@@ -109,17 +109,17 @@ export const eraseFile = async (file) => {
   if (!docStats.types) docStats.types = {}
   if (!docStats.categories) docStats.categories = {}
 
-  let targetTypeData = docStats.types[file.type]
-  let targetCategoryData = docStats.categories[file.category]
+  const targetTypeData = docStats.types[file.type]
+  const targetCategoryData = docStats.categories[file.category]
 
   const newDocStats = {
     types: {
       ...docStats.types,
-      [file.type]: targetTypeData ? targetTypeData-- : 0
+      [file.type]: (targetTypeData || 1) - 1
     },
     categories: {
       ...docStats.category,
-      [file.category]: targetCategoryData ? targetCategoryData-- : 0
+      [file.category]: (targetCategoryData || 1) - 1
     }
   }
 
