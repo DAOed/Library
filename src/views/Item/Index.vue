@@ -60,7 +60,8 @@ export default {
     }
   },
   async mounted () {
-    let urlData = this.$route.query.uri
+    let urlData = this.$route.query ? this.$route.query.uri : null
+
     if (!urlData) {
       this.$Toast.warning("Sorry, invalid permalink")
       this.$router.push("/")
@@ -94,7 +95,7 @@ export default {
         this.loading = false
       } catch (err) {
         console.log(err)
-        this.$Toast.warning("Sorry, invalid permalink")
+        this.$Toast.warning("Sorry, could not decode item permalink")
         this.$router.push("/")
       }
     }
