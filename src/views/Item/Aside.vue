@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center; flex-wrap: wrap;">
       <span :style="avatar.style">{{ avatar.content }}</span>
       <router-link
         :to="'/author?id=' + authorData.username"
-        style="margin-left: 0.8rem; color: inherit;"
+        style="color: inherit;"
         class="s-120"
       >
         @{{ authorData.username.split('.')[0] }}
@@ -78,6 +78,7 @@ export default {
       let avatar = initialsAvatar(this.authorData.username || "??")
       avatar.style.width = "4.5rem"
       avatar.style.height = "4.5rem"
+      avatar.style.marginRight = "0.8rem"
       return avatar
     }
   },
