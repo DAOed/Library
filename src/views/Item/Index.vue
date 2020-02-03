@@ -57,34 +57,43 @@ export default {
   },
   async mounted () {
     let urlData = this.$route.query.uri
-    if (!urlData) this.$router.push("/")
-
-    urlData = window.atob(urlData)
-    if (!urlData) this.$router.push("/")
-
-    const parts = urlData.split("/")
-    const username = parts[0]
-    const category = parts[1]
-    const key = parts[2]
-
-    // first load item meta data
-    const itemData = await getFileMeta({ username, category, key })
-    this.itemData = itemData
-    document.title = itemData.name + " - DAOed Library"
-    // console.log("itemData", itemData)
-
-    // now load author data
-    let authorData
-    if (this.profileData.username === username) {
-      authorData = this.profileData
+    if (!urlData) {
+      this.$Toast.warning("Sorry, invalid permalink")
+      this.$router.push("/")
     } else {
-      authorData = await getPublicFile({ username, path: "library/profile" })
-      authorData = JSON.parse(authorData || "{}")
-    }
-    this.authorData = authorData
-    // console.log("authorData", authorData)
+      try {
+        urlData = window.atob(urlData)
+        if (!urlData) this.$router.push("/")
 
-    this.loading = false
+        const parts = urlData.split("/")
+        const username = parts[0]
+        const category = parts[1]
+        const key = parts[2]
+
+        // first load item meta data
+        const itemData = await getFileMeta({ username, category, key })
+        this.itemData = itemData
+        document.title = itemData.name + " - DAOed Library"
+        // console.log("itemData", itemData)
+
+        // now load author data
+        let authorData
+        if (this.profileData.username === username) {
+          authorData = this.profileData
+        } else {
+          authorData = await getPublicFile({ username, path: "library/profile" })
+          authorData = JSON.parse(authorData || "{}")
+        }
+        this.authorData = authorData
+        // console.log("authorData", authorData)
+
+        this.loading = false
+      } catch (err) {
+        console.log(err)
+        this.$Toast.warning("Sorry, invalid permalink")
+        this.$router.push("/")
+      }
+    }
   }
 }
 </script>
