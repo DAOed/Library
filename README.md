@@ -11,6 +11,7 @@ DAOed Library is a secure, free, and user-friendly decentralized BlockStack docu
 * Create our profile, with social and blockchain links and Markdown support for bio
 * Browser author's account and their collection of documents
 * Download files for free
+* Share documents to Facebook, Twitter, LinkedIn, Reddit, Hacker New, Telegram or copy permlink
 * Light and dark theme support
 * Bookmark/save files(coming soon)
 * Create private files(coming soon)
