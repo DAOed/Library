@@ -76,7 +76,7 @@ export const newFile = async (file, fileContent) => {
   return uri
 }
 
-export const updateFileMeta = async (file) => {
+export const updateFileMetaInfo = async (file) => {
   // 1) update category index
   let categoryIndex = await getCategoryIndex(file)
 

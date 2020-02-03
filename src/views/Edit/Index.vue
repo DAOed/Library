@@ -141,7 +141,7 @@ import { docCategories, docTypes, docModes, maxDescriptionLength } from "@consta
 
 import { mapGetters } from "vuex"
 
-import { updateFileMeta, eraseFile } from "@lib/utils"
+import { updateFileMetaInfo, eraseFile } from "@lib/utils"
 
 import PageTitle from "@components/title"
 
@@ -200,7 +200,7 @@ export default {
       const name = this.file.name + "." + this.fileExt
       const fileData = { ...this.file, name }
 
-      const uri = await updateFileMeta(fileData)
+      const uri = await updateFileMetaInfo(fileData)
       this.$router.push("/item?uri=" + uri)
     },
     async deleteFile () {
