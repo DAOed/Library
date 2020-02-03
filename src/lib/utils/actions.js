@@ -1,4 +1,4 @@
-import { zoneFileLookupURL } from "@constants"
+import { zoneFileLookupURL, accountTypes } from "@constants"
 import { saveFile, getFile } from "@lib/blockstack"
 import { rawGetFile, filer } from "@lib/helpers"
 
@@ -21,8 +21,9 @@ export const loadProfile = async () => {
     let name = profile.name || userData.username
     let username = userData.username
     let bio = profile.description || "Author has not written about themselves yet."
+    let type = accountTypes[0]
 
-    await updateProfile({ name, bio, username })
+    await updateProfile({ name, bio, username, type })
   }
 }
 
