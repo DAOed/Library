@@ -92,6 +92,41 @@ export const updateFileMeta = async (file) => {
   return uri
 }
 
+export const eraseFile = async (file) => {
+  // 1) update category index
+  const categoryIndex = await getCategoryIndex(file)
+
+  file.path = `file/${file.category}/${file.key}`
+
+  const updatedCategoryIndex = categoryIndex.filter((i) => i.key !== file.key)
+  await updateCategoryIndex(file, updatedCategoryIndex)
+
+  // 2) save file content
+  await deleteFile(file.path)
+
+  // 3) update stats
+  let docStats = store.getters.docStats
+  if (!docStats.types) docStats.types = {}
+  if (!docStats.categories) docStats.categories = {}
+
+  let targetTypeData = docStats.types[file.type]
+  let targetCategoryData = docStats.categories[file.category]
+
+  const newDocStats = {
+    types: {
+      ...docStats.types,
+      [file.type]: targetTypeData ? targetTypeData-- : 0
+    },
+    categories: {
+      ...docStats.category,
+      [file.category]: targetCategoryData ? targetCategoryData-- : 0
+    }
+  }
+
+  await updateDocStats(newDocStats)
+  store.dispatch("docStats", newDocStats)
+}
+
 export const erasePath = async (path) => {
   // override with dummy content
   await saveFile(path, "{}", { encrypt: false, noPrefix: true })

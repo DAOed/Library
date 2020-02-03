@@ -92,24 +92,29 @@
         <div
           class="input-area justified"
         >
-          <zi-button
-            auto
-            :disabled="loading"
-            style="width: 20%"
-            type="warning"
-            ghost
-            @click="confirmDeleteVisible = true"
-          >
-            Delete
-          </zi-button>
-          <zi-button
-            auto
-            :loading="loading"
-            style="width: 20%"
-            @click="updateFile"
-          >
-            Update
-          </zi-button>
+          <div>
+            <zi-button
+              v-if="!loading"
+              auto
+              :loading="deleting"
+              type="warning"
+              ghost
+              @click="confirmDeleteVisible = true"
+            >
+              <span style="margin: 0rem 3rem"> Delete </span>
+            </zi-button>
+          </div>
+
+          <div>
+            <zi-button
+              v-if="!deleting"
+              auto
+              :loading="loading"
+              @click="updateFile"
+            >
+              <span style="margin: 0rem 3rem"> Update </span>
+            </zi-button>
+          </div>
         </div>
       </div>
     </div>
@@ -136,7 +141,7 @@ import { docCategories, docTypes, docModes, maxDescriptionLength } from "@consta
 
 import { mapGetters } from "vuex"
 
-import { updateFileMeta } from "@lib/utils"
+import { updateFileMeta, eraseFile } from "@lib/utils"
 
 import PageTitle from "@components/title"
 
@@ -147,6 +152,7 @@ export default {
   data: () => ({
     progress: 0,
     loading: false,
+    deleting: false,
     docCategories,
     docTypes,
     docModes,
@@ -174,12 +180,6 @@ export default {
     }
   },
   mounted () {
-    /*
-    if (this.editItem.itemData) {
-      this.$router.push("/")
-    } else
-
-    */
     if (this.authorData.username !== this.itemData.username) {
       this.$router.push("/")
     } else {
@@ -197,15 +197,21 @@ export default {
   methods: {
     async updateFile () {
       this.loading = true
-      let name = this.file.name + "." + this.fileExt
-
+      const name = this.file.name + "." + this.fileExt
       const fileData = { ...this.file, name }
 
       const uri = await updateFileMeta(fileData)
       this.$router.push("/item?uri=" + uri)
     },
     async deleteFile () {
+      this.confirmDeleteVisible = false
+      this.deleting = true
 
+      const name = this.file.name + "." + this.fileExt
+      const fileData = { ...this.file, name }
+
+      await eraseFile(fileData)
+      this.$router.push("/")
     }
 
   }

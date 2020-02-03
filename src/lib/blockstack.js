@@ -62,7 +62,7 @@ export const getFile = async (name, options = { decrypt: true }) => {
   }
 }
 
-export const deleteFile = async (name, options) => {
+export const deleteFile = async (name, options = {}) => {
   let noPrefix = options.noPrefix
   delete options.noPrefix
 

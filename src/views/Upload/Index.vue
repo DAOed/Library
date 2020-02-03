@@ -115,7 +115,7 @@
             />
             <zi-button
               auto
-              :disabled="loading"
+              :loading="loading"
               style="width: 20%"
               @click="publishFile"
             >
@@ -172,7 +172,8 @@ export default {
       category: docCategories[0]
     },
     fileContent: null,
-    maxDescriptionLength
+    maxDescriptionLength,
+    fileExt: ""
   }),
   computed: {
     supportedExt () {
