@@ -38,6 +38,11 @@
                 <zi-popover-item command="telegram">
                   Telegram
                 </zi-popover-item>
+                <zi-popover-item line />
+                <zi-popover-item command="copy">
+                  Copy permalink
+                </zi-popover-item>
+
                 <!--
                 <zi-popover-item command="skype">
                   Skype
@@ -48,7 +53,6 @@
                 <zi-popover-item command="vk">
                   VK
                 </zi-popover-item>
-                <zi-popover-item line />
                 <zi-popover-item command="email">
                   Email
                 </zi-popover-item>
@@ -97,6 +101,12 @@
         </ul>
       </zi-description>
     </div>
+
+    <input
+      id="permalink"
+      type="hidden"
+      :value="permalink"
+    >
   </div>
 </template>
 
@@ -124,6 +134,11 @@ export default {
       default: () => {
         return {}
       }
+    }
+  },
+  computed: {
+    permalink () {
+      return window.location.href
     }
   },
   methods: {
@@ -156,10 +171,35 @@ export default {
       case "hackernews":
         shareLink = `https://news.ycombinator.com/submitlink?u=${url}&t=${title}`
         break
+      case "copy":
+        this.copyPermlink()
+        break
       default:
     // code block
       }
-      window.open(shareLink)
+      if (shareLink) window.open(shareLink)
+    },
+    copyPermlink () {
+      let permalinkEl = document.querySelector("#permalink")
+      permalinkEl.setAttribute("type", "text")
+      permalinkEl.select()
+
+      try {
+        const permalink = document.execCommand("copy")
+
+        if (permalink) {
+          this.$Toast.success("Successfully copied permalink to clipboard")
+        } else {
+          this.$Toast.warning("Sorry, failed to copy to clipboard")
+        }
+      } catch (err) {
+        console.log(err)
+        this.$Toast.warning("Sorry, failed to copy to clipboard")
+      }
+
+      /* unselect the range */
+      permalinkEl.setAttribute("type", "hidden")
+      window.getSelection().removeAllRanges()
     }
   }
 }
