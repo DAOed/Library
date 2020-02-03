@@ -220,13 +220,17 @@ export default {
       this.file.modified = new Date()
 
       // this one last so fields are shown only after FILE CONTENT is read
-      this.file.name = file.name
+      this.file.name = file.name.split(".").slice(0, -1).join(".")
+
+      let ext = file.name.split(".").pop()
+      this.fileExt = ext
     },
     async publishFile () {
       this.loading = true
 
       const username = this.$store.getters.userData.username
-      const fileData = { ...this.file, username }
+      const name = this.file.name + "." + this.fileExt
+      const fileData = { ...this.file, username, name }
 
       const uri = await newFile(fileData, this.fileContent)
       this.$router.push("/item?uri=" + uri)
