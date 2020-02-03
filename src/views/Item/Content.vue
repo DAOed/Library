@@ -4,6 +4,21 @@
       <page-title :title="itemData.name">
         <template v-slot:extra>
           <div>
+            <zi-button
+              size="small"
+              auto
+              title="scan QR code"
+              class="action-button"
+              @click="qrVisible = true"
+            >
+              <img
+                :src="'/img/qr.svg'"
+                style="width: 1rem; height: 1rem;"
+              >
+
+              <span style="margin-left: 0.2rem">QR</span>
+            </zi-button>
+
             <zi-popover
               align="right"
               @command="commandHandler"
@@ -102,18 +117,31 @@
       </zi-description>
     </div>
 
+    <zi-dialog
+      v-model="qrVisible"
+      done="ok!"
+    >
+      <img
+        :src="qr"
+        style="width: 100%; height: 15rem;"
+      >
+    </zi-dialog>
+
     <input
       id="permalink"
       type="hidden"
       :value="permalink"
     >
+
+    <v-styler>{{ updateClass }}</v-styler>
   </div>
 </template>
 
 <script>
-import pageTitle from "@components/title"
-
+import QRCode from "qrcode"
 import { Share2Icon } from "vue-feather-icons"
+
+import pageTitle from "@components/title"
 
 import { mdRenderer } from "@lib/helpers"
 
@@ -136,10 +164,25 @@ export default {
       }
     }
   },
+  data: () => ({
+    qrVisible: false,
+    qr: "",
+    updateClass: `
+      .zi-dialog-footer {
+        display: none !important;
+      }
+      .zi-dialog-wrapper {
+        transform: translateY(0px) !important;
+      }
+    `
+  }),
   computed: {
     permalink () {
       return window.location.href
     }
+  },
+  async mounted () {
+    await this.makeQRCOde()
   },
   methods: {
     getHTML (md) {
@@ -200,6 +243,16 @@ export default {
       /* unselect the range */
       permalinkEl.setAttribute("type", "hidden")
       window.getSelection().removeAllRanges()
+    },
+    async makeQRCOde () {
+      let url = window.location.href
+
+      try {
+        let qr = await QRCode.toDataURL(url)
+        this.qr = qr
+      } catch (err) {
+        console.error(err)
+      }
     }
   }
 }

@@ -13,6 +13,7 @@
     "core-js": "^3.4.4",
     "daoed": "^0.3.0",
     "md5": "^2.2.1",
+    "qrcode": "^1.4.4",
     "register-service-worker": "^1.6.2",
     "spa-generic-css": "^0.13.0",
     "steem-content-renderer": "^2.1.1",
