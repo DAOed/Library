@@ -32,6 +32,7 @@
 <script>
 import { mapGetters } from "vuex"
 import { userSession } from "@lib/blockstack"
+import { PRERENDER } from "@constants"
 
 export default {
   data: () => ({
@@ -48,7 +49,9 @@ export default {
     }
   },
   mounted () {
-    if (this.userData.username) this.$router.push("/")
+    if (!PRERENDER) {
+      if (this.userData.username) this.$router.push("/")
+    }
   },
   methods: {
     signIn () {

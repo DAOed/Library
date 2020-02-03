@@ -137,7 +137,7 @@
 
 <script>
 
-import { docCategories, docTypes, docModes, maxDescriptionLength } from "@constants"
+import { docCategories, docTypes, docModes, maxDescriptionLength, PRERENDER } from "@constants"
 
 import { mapGetters } from "vuex"
 
@@ -180,15 +180,17 @@ export default {
     }
   },
   mounted () {
-    if (this.authorData.username !== this.itemData.username) {
-      this.$router.push("/")
-    } else {
-      let name = this.itemData.name
-      let ext = name.split(".").pop()
-      name = name.split(".").slice(0, -1).join(".")
+    if (!PRERENDER) {
+      if (this.authorData.username !== this.itemData.username) {
+        this.$router.push("/")
+      } else {
+        let name = this.itemData.name
+        let ext = name.split(".").pop()
+        name = name.split(".").slice(0, -1).join(".")
 
-      this.file = { ...this.itemData, name }
-      this.fileExt = ext
+        this.file = { ...this.itemData, name }
+        this.fileExt = ext
+      }
     }
   },
   beforeDestroy () {

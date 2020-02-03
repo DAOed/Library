@@ -30,6 +30,7 @@ import ProgressBar from "@components/progress"
 import { getFile, userSession } from "@lib/blockstack"
 
 import { loadProfile, loadDocStats } from "@lib/utils"
+import { PRERENDER } from "@constants"
 
 export default {
   components: {
@@ -88,57 +89,59 @@ export default {
     }
   },
   async mounted () {
-    this.progress += 10
-    this.statusMessage = "Checking auth ..."
+    if (!PRERENDER) {
+      this.progress += 10
+      this.statusMessage = "Checking auth ..."
 
-    // check if user is logged in
-    if (userSession.isUserSignedIn()) {
-      let data = userSession.loadUserData()
-      this.$store.dispatch("userData", data)
+      // check if user is logged in
+      if (userSession.isUserSignedIn()) {
+        let data = userSession.loadUserData()
+        this.$store.dispatch("userData", data)
 
-      this.progress += 30
-      this.statusMessage = "Loading user data ..."
+        this.progress += 30
+        this.statusMessage = "Loading user data ..."
 
-      await this.loadData()
+        await this.loadData()
 
-      window.history.replaceState({}, document.title, window.location.pathname)
+        window.history.replaceState({}, document.title, window.location.pathname)
 
-      this.progress += 50
-      this.statusMessage = "Reading drive ..."
+        this.progress += 50
+        this.statusMessage = "Reading drive ..."
 
-      await loadProfile()
+        await loadProfile()
 
-      //
-      // let routeName = this.$route.name ? this.$route.name.toLowerCase() : "files"
-      // let isFolder = Object.keys(coreFolders).find((route) => route === routeName)
+        //
+        // let routeName = this.$route.name ? this.$route.name.toLowerCase() : "files"
+        // let isFolder = Object.keys(coreFolders).find((route) => route === routeName)
 
-      // let folderMeta = await readyCoreFolders(coreFolders[routeName])
-      // if (folderMeta) this.$store.dispatch("folderMeta", folderMeta)
+        // let folderMeta = await readyCoreFolders(coreFolders[routeName])
+        // if (folderMeta) this.$store.dispatch("folderMeta", folderMeta)
 
-      this.loading = false
-      this.progress = 0
-    } else if (userSession.isSignInPending()) {
-      this.progress += 20
-      this.statusMessage = "Handling auth ..."
+        this.loading = false
+        this.progress = 0
+      } else if (userSession.isSignInPending()) {
+        this.progress += 20
+        this.statusMessage = "Handling auth ..."
 
-      userSession.handlePendingSignIn()
-        .then(async (userData) => {
-          this.$store.dispatch("userData", userData)
+        userSession.handlePendingSignIn()
+          .then(async (userData) => {
+            this.$store.dispatch("userData", userData)
 
-          this.progress += 30
-          this.statusMessage = "Loading user data ..."
+            this.progress += 30
+            this.statusMessage = "Loading user data ..."
 
-          await this.loadData()
+            await this.loadData()
 
-          this.progress = 0
-          this.$router.push("/collection")
-          this.loading = false
-        })
+            this.progress = 0
+            this.$router.push("/collection")
+            this.loading = false
+          })
 
-      window.history.replaceState({}, document.title, window.location.pathname)
-    } else {
-      this.loading = false
-      this.progress = 0
+        window.history.replaceState({}, document.title, window.location.pathname)
+      } else {
+        this.loading = false
+        this.progress = 0
+      }
     }
   },
   methods: {

@@ -40,6 +40,7 @@ import pageLoader from "@components/loader"
 
 import { getCategoryIndex } from "@lib/utils"
 import { capitalize } from "@lib/helpers"
+import { PRERENDER } from "@constants"
 
 export default {
   name: "Reads",
@@ -55,17 +56,19 @@ export default {
     indexData: []
   }),
   async mounted () {
-    let username = this.$route.query.author
-    let category = this.$route.query.category
+    if (!PRERENDER) {
+      let username = this.$route.query.author
+      let category = this.$route.query.category
 
-    if (!username || !category) {
-      this.$router.push("/")
-    } else {
-      this.title = capitalize(category) + " reads"
+      if (!username || !category) {
+        this.$router.push("/")
+      } else {
+        this.title = capitalize(category) + " reads"
 
-      let meta = { username, category }
-      let index = await getCategoryIndex(meta)
-      this.indexData = index
+        let meta = { username, category }
+        let index = await getCategoryIndex(meta)
+        this.indexData = index
+      }
     }
   }
 }

@@ -15,6 +15,8 @@ export const defaultSettings = {
   saveTheme: false
 }
 
+export const PRERENDER = window.__PRERENDER_INJECTED && window.__PRERENDER_INJECTED.PRERENDER
+
 export const appPrefixer = "library/"
 export const metaIndexName = "__daoed__meta__data__SYS"
 
