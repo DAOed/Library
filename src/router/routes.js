@@ -94,6 +94,25 @@ export default [
     }
   },
   {
+    path: "/edit",
+    name: "Edit",
+    component: () => import(/* webpackChunkName: "edit" */ "../views/Edit/Index.vue"),
+    meta: {
+      title: "Edit - DAOed Library",
+      metaTags: [
+        {
+          name: "description",
+          content: "Edit the details of your document or erase it from the decentralized DAOed library."
+        },
+        {
+          property: "og:description",
+          content: "Edit the details of your document or erase it from the decentralized DAOed library."
+        }
+      ],
+      requiresAuth: true
+    }
+  },
+  {
     path: "/account",
     name: "Account",
     component: () => import(/* webpackChunkName: "account" */ "../views/Account/Index.vue"),

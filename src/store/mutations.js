@@ -9,6 +9,9 @@ export default {
   docStats (state, payload) {
     state.docStats = payload
   },
+  editItem (state, payload) {
+    state.editItem = payload
+  },
 
   theme (state, payload) {
     state.theme = payload

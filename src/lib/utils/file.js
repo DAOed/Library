@@ -76,6 +76,22 @@ export const newFile = async (file, fileContent) => {
   return uri
 }
 
+export const updateFileMeta = async (file) => {
+  // 1) update category index
+  let categoryIndex = await getCategoryIndex(file)
+
+  // 2) update file's meta in the index
+  const fileMetaIndex = categoryIndex.findIndex((i) => i.key === file.key)
+  categoryIndex[fileMetaIndex] = file
+
+  // 3) store updated index of meta's
+  await updateCategoryIndex(file, categoryIndex)
+
+  // 4) return uri
+  const uri = btoa(`${file.username}/${file.category}/${file.key}`)
+  return uri
+}
+
 export const erasePath = async (path) => {
   // override with dummy content
   await saveFile(path, "{}", { encrypt: false, noPrefix: true })

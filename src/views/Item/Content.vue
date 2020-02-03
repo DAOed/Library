@@ -5,6 +5,21 @@
         <template v-slot:extra>
           <div>
             <zi-button
+              v-if="canEdit"
+              size="small"
+              auto
+              title="scan QR code"
+              class="action-button"
+              @click="editItem"
+            >
+              <edit-2-icon
+                size="1.2x"
+              />
+
+              <span style="margin-left: 0.2rem">Edit</span>
+            </zi-button>
+
+            <zi-button
               size="small"
               auto
               title="scan QR code"
@@ -139,7 +154,7 @@
 
 <script>
 import QRCode from "qrcode"
-import { Share2Icon } from "vue-feather-icons"
+import { Share2Icon, Edit2Icon } from "vue-feather-icons"
 
 import pageTitle from "@components/title"
 
@@ -148,7 +163,8 @@ import { mdRenderer } from "@lib/helpers"
 export default {
   components: {
     pageTitle,
-    Share2Icon
+    Share2Icon,
+    Edit2Icon
   },
   props: {
     authorData: {
@@ -162,6 +178,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    canEdit: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -253,6 +273,12 @@ export default {
       } catch (err) {
         console.error(err)
       }
+    },
+    editItem () {
+      let data = { authorData: this.authorData, itemData: this.itemData }
+      this.$store.dispatch("editItem", data)
+
+      this.$router.push("/edit")
     }
   }
 }

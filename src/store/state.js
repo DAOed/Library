@@ -4,5 +4,6 @@ export default {
   theme: "light",
   settings: {},
   profileData: {},
-  docStats: {}
+  docStats: {},
+  editItem: {}
 }

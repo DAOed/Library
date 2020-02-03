@@ -13,6 +13,9 @@ export default {
   docStats ({ commit }, payload) {
     commit("docStats", payload)
   },
+  editItem ({ commit }, payload) {
+    commit("editItem", payload)
+  },
   async theme ({ commit, state }, payload = {}) {
     const { mode, auto } = payload
     if (auto) {

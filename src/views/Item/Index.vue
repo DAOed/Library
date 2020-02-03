@@ -11,6 +11,7 @@
             <content-section
               :author-data="authorData"
               :item-data="itemData"
+              :can-edit="canEdit"
             />
           </div>
           <div
@@ -53,7 +54,10 @@ export default {
   computed: {
     ...mapGetters([
       "profileData"
-    ])
+    ]),
+    canEdit () {
+      return this.profileData.username === this.authorData.username
+    }
   },
   async mounted () {
     let urlData = this.$route.query.uri
