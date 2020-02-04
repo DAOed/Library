@@ -7,6 +7,7 @@
           <div>
             <profile-section
               :author-data="authorData"
+              :user-data="userData"
               @activeView="activeView"
             />
           </div>
@@ -52,14 +53,15 @@ export default {
     AppLoader
   },
   data: () => ({
-    loading: false,
+    loading: true,
     active: "About",
     authorData: {},
     categories: []
   }),
   computed: {
     ...mapGetters([
-      "profileData"
+      "profileData",
+      "userData"
     ]),
     username () {
       return this.$route.query ? this.$route.query.id : null
@@ -67,13 +69,12 @@ export default {
   },
   async mounted () {
     if (!PRERENDER) {
-      this.loading = true
       let username = this.username
+      let authorData
 
       if (!username) {
         this.$router.push("/")
       } else {
-        let authorData
         if (this.profileData.username === username) {
           authorData = this.profileData
         } else {
@@ -81,13 +82,13 @@ export default {
           authorData = authorData ? JSON.parse(authorData) : null
         }
 
-        this.loading = false
-
         if (authorData) {
           this.authorData = authorData
           // now load stats
           let docStats = await getDocStats({ username })
           this.categories = docStats.categories || {}
+
+          this.loading = false
         } else {
           this.$Toast.warning("Sorry, nothing found for user")
           this.$router.push("/")

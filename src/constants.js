@@ -24,6 +24,9 @@ export const maxRawFiles = 100
 export const maxFilesPerCategory = 100
 export const maxDescriptionLength = 2000
 
+export const maxRelations = 400
+export const maxRecommends = 400
+
 export const docModes = ["Public"]// ["Open", "Public", "Private"]
 
 export const accountTypes = ["Author", "Publisher", "Researcher", "Journalist"]

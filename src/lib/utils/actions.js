@@ -126,3 +126,47 @@ export const updateDocStats = async (data) => {
 
   await saveFile(noPrefix ? path : filer(path), data, { encrypt: false })
 }
+
+export const loadRelations = async (username = null, type) => {
+  if (!type) throw new Error("Missing type")
+  if (["following", "muted"].indexOf(type) === -1) throw new Error("Invalid type, must be of type: following or muted")
+
+  const options = { username, verify: false, decrypt: false, zoneFileLookupURL }
+  let data
+
+  try {
+    if (username && type !== "muted") {
+      data = await rawGetFile(filer(type), options)
+    } else {
+      data = await getFile(filer(type), { decrypt: type === "muted" })
+    }
+  } catch (err) {
+    console.log(err)
+  }
+
+  return data ? JSON.parse(data) : data
+}
+
+export const isRelation = async (username, target, type, returns) => {
+  if (!username || !target || !type) throw new Error("Missing user, target or type")
+  if (["following", "muted"].indexOf(type) === -1) throw new Error("Invalid type, must be of type: following or muted")
+
+  let relations
+  let yesRelation
+
+  try {
+    relations = await loadRelations(username, type)
+    yesRelation = (relations || []).find((r) => r === target)
+  } catch (err) {
+    console.log(err)
+  }
+
+  return returns ? relations : yesRelation
+}
+
+export const updateRelations = async (data, type) => {
+  if (!data || !type) throw new Error("Missing data or type")
+  if (["following", "muted"].indexOf(type) === -1) throw new Error("Invalid type, must be of type: following or muted")
+
+  await saveFile(filer(type), data, { encrypt: type === "muted" })
+}
