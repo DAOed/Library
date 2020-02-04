@@ -106,7 +106,7 @@ export default {
         window.history.replaceState({}, document.title, window.location.pathname)
 
         this.progress += 50
-        this.statusMessage = "Reading drive ..."
+        this.statusMessage = "Reading data ..."
 
         await loadProfile()
 
@@ -131,6 +131,8 @@ export default {
             this.statusMessage = "Loading user data ..."
 
             await this.loadData()
+
+            await loadProfile()
 
             this.progress = 0
             this.$router.push("/collection")
