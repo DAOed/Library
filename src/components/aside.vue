@@ -72,6 +72,10 @@ export default {
         {
           type: "file",
           name: "Settings"
+        },
+        {
+          type: "file",
+          name: "Search"
         }
       ]
     }
@@ -88,6 +92,9 @@ export default {
         break
       case "Account":
         path = "/account"
+        break
+      case "Search":
+        path = "/search"
         break
       default:
       // code block
