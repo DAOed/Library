@@ -125,8 +125,8 @@ export default {
       let mutedList = await isRelation(this.userData.username, this.authorData.username, "muted", true)
       this.mutedList = mutedList || []
 
-      this.following = followingList && followingList.length
-      this.muted = mutedList && mutedList.length
+      this.following = Boolean(followingList && followingList.length)
+      this.muted = Boolean(mutedList && mutedList.length)
     }
   },
   methods: {
