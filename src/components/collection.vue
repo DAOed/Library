@@ -10,6 +10,7 @@
           <p> {{ `${item.name} (${item.value})` }} </p>
 
           <zi-button
+            :disabled="!item.value"
             auto
             @click="openCategory(item)"
           >
