@@ -8,6 +8,7 @@
             <profile-section
               :author-data="authorData"
               :user-data="userData"
+              :tab="tab"
               @activeView="activeView"
             />
           </div>
@@ -57,7 +58,8 @@ export default {
     active: "About",
     authorData: {},
     categories: [],
-    categoriesLoading: true
+    categoriesLoading: true,
+    tab: "About"
   }),
   computed: {
     ...mapGetters([
@@ -89,6 +91,12 @@ export default {
           let docStats = await getDocStats({ username })
           this.categories = docStats.categories || []
           this.categoriesLoading = false
+
+          const tab = this.$route.query ? this.$route.query.tab : null
+          if (tab) {
+            this.tab = tab
+            this.active = tab
+          }
 
           this.loading = false
         } else {

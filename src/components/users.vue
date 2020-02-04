@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     openCollection (account) {
-      this.$router.push(`/collection?author=${account.username}`)
+      this.$router.push(`/author?id=${account.username}&tab=Collection`)
     },
     imgUrlAlt (event) {
       event.target.src = placeholderImg

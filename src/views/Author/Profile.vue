@@ -30,6 +30,7 @@
           v-for="label in labels"
           :key="label"
           :label="label"
+          :active="tab === label"
         />
       </zi-switcher>
 
@@ -94,6 +95,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    tab: {
+      type: String,
+      default: "About"
     }
   },
   data: () => ({
