@@ -1,5 +1,6 @@
 
 import { maxFileSize, supportedFileExt } from "@constants"
+import { initialsAvatar } from "@lib/helpers"
 import md5 from "md5"
 
 export const makePath = (parentPath, name) => {
@@ -132,4 +133,17 @@ export const uniquifyNewFileNames = (oldFiles, newFiles) => {
 export const makeFileNameUnique = (oldFiles, newFiles) => {
   let uniqueFiles = uniquifyNewFileNames(oldFiles, newFiles)
   return uniqueFiles[0]
+}
+
+export const schemeAccounts = (accs = []) => {
+  return accs.map((acc) => {
+    const profile = acc.profile || {}
+
+    const name = (profile.name || "").substring(0, 30) || acc.username
+    const bio = (profile.description || "").substring(0, 300)
+    const avatar = ((profile.image || []).find((i) => i.name === "avatar") || {}).contentUrl || initialsAvatar(acc.username)
+    const username = acc.username
+
+    return { name, bio, avatar, username }
+  })
 }

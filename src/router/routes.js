@@ -150,6 +150,24 @@ export default [
     }
   },
   {
+    path: "/search",
+    name: "Search",
+    component: () => import(/* webpackChunkName: "search" */ "../views/Search/Index.vue"),
+    meta: {
+      title: "Search - DAOed Library",
+      metaTags: [
+        {
+          name: "description",
+          content: "Search the decentralized DAOed Library for author and their content."
+        },
+        {
+          property: "og:description",
+          content: "Search the decentralized DAOed Library for author and their content."
+        }
+      ]
+    }
+  },
+  {
     path: "/settings",
     name: "Settings",
     component: () => import(/* webpackChunkName: "settings" */ "../views/Settings/Index.vue"),

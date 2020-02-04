@@ -59,6 +59,18 @@
           </zi-button>
 
           <zi-button
+            type="abort"
+            auto
+            title="Search"
+            @click="commandHandler('search')"
+          >
+            <search-icon
+              class="icon-class"
+              size="1.5x"
+            />
+          </zi-button>
+
+          <zi-button
             v-if="!userData.username"
             type="abort"
             auto
@@ -133,13 +145,14 @@
 import { userSession } from "@lib/blockstack"
 import { initialsAvatar } from "@lib/helpers"
 import { mapGetters } from "vuex"
-import { SunIcon, MoonIcon, GridIcon } from "vue-feather-icons"
+import { SunIcon, MoonIcon, GridIcon, SearchIcon } from "vue-feather-icons"
 
 export default {
   components: {
     SunIcon,
     MoonIcon,
-    GridIcon
+    GridIcon,
+    SearchIcon
   },
   data: () => {
     return {

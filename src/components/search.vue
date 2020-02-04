@@ -27,12 +27,15 @@ export default {
     query: {
       type: String,
       default: ""
+    },
+    placeholder: {
+      type: String,
+      default: "Search"
     }
   },
   data: () => {
     return {
-      data: "",
-      placeholder: "Search documents"
+      data: ""
     }
   },
   created () {
