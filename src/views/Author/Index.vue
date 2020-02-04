@@ -19,7 +19,7 @@
           </div>
 
           <div v-else-if="active === 'Collection'">
-            <app-loader v-if="Object.keys(categories).length === 0" />
+            <app-loader v-if="categoriesLoading" />
             <collection-section
               v-else
               :collection="categories"
@@ -56,7 +56,8 @@ export default {
     loading: true,
     active: "About",
     authorData: {},
-    categories: []
+    categories: [],
+    categoriesLoading: true
   }),
   computed: {
     ...mapGetters([
@@ -86,7 +87,8 @@ export default {
           this.authorData = authorData
           // now load stats
           let docStats = await getDocStats({ username })
-          this.categories = docStats.categories || {}
+          this.categories = docStats.categories || []
+          this.categoriesLoading = false
 
           this.loading = false
         } else {
