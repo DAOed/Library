@@ -12,6 +12,7 @@
       <zi-button
         auto
         class="search-button"
+        :loading="loading"
         @click="search"
       >
         Search
@@ -31,6 +32,10 @@ export default {
     placeholder: {
       type: String,
       default: "Search"
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => {

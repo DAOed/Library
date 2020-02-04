@@ -12,11 +12,17 @@
             </div>
 
             <div>
-              <search-component @search="search" />
+              <search-component
+                :loading="loading"
+                @search="search"
+              />
             </div>
 
             <div>
+              <page-loader v-if="loading" />
+
               <users-section
+                v-else
                 :accounts="accounts"
               />
             </div>
@@ -32,6 +38,7 @@ import pageAside from "@components/aside"
 import pageTitle from "@components/title"
 import UsersSection from "@components/users"
 import SearchComponent from "@components/search"
+import pageLoader from "@components/loader"
 
 import { searchAccount } from "@lib/blockstack"
 import { schemeAccounts } from "@lib/utils"
@@ -42,18 +49,22 @@ export default {
     pageAside,
     pageTitle,
     UsersSection,
-    SearchComponent
+    SearchComponent,
+    pageLoader
   },
   data: () => ({
     title: "Search",
-    accounts: []
+    accounts: [],
+    loading: false
   }),
   methods: {
     async search (e) {
+      this.loading = true
       let data = await searchAccount(e)
       data = data.results || []
 
       this.accounts = schemeAccounts(data)
+      this.loading = false
     }
   }
 }
