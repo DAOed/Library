@@ -7,6 +7,21 @@
     <div class="aside-meta s-70 tc-gray">
       <span style="border-top: 2px #fafafa solid; padding-top: 0.5rem;" />
     </div>
+
+    <zi-dialog
+      v-model="modalVisible"
+      title="Open account"
+      done="Open account"
+      :before-done="goAccount"
+    >
+      <p> Can't find a username by searching? Directly open it. </p>
+      <zi-input
+        v-model="username"
+        size="small"
+        style="width: 100%"
+        placeholder="Enter full blockstack username"
+      />
+    </zi-dialog>
   </div>
 </template>
 
@@ -16,6 +31,8 @@
 export default {
   name: "Aside",
   data: () => ({
+    modalVisible: false,
+    username: ""
   }),
   computed: {
 
@@ -76,14 +93,16 @@ export default {
         {
           type: "file",
           name: "Search"
+        },
+        {
+          type: "file",
+          name: "Go to"
         }
       ]
     }
   },
   methods: {
     clickHandler (e) {
-      console.log(e)
-
       let path
 
       switch (e.name) {
@@ -96,11 +115,21 @@ export default {
       case "Search":
         path = "/search"
         break
+      case "Go to":
+        this.modalVisible = true
+        break
       default:
       // code block
       }
 
       if (path && this.$route.path !== path) this.$router.push(path)
+    },
+    goAccount () {
+      this.modalVisible = false
+
+      if (this.username && this.$router.path !== "/author") {
+        this.$router.push(`/author?id=${this.username}`)
+      }
     }
   }
 }
