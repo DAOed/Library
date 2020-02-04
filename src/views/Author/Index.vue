@@ -4,28 +4,61 @@
       <div class="author-inside">
         <app-loader v-if="loading" />
         <div v-else>
-          <div>
-            <profile-section
-              :author-data="authorData"
-              :user-data="userData"
-              :tab="tab"
-              @activeView="activeView"
-            />
+          <div
+            v-if="userNotFound"
+            style="margin: 2rem"
+          >
+            <zi-note
+              label="404"
+              type="secondary"
+            >
+              <div style="margin: 2rem 0rem">
+                <div class="s-140">
+                  Sorry, user has not yet created their profile.
+                </div>
+                <div
+                  class="justified"
+                  style="margin: 2rem 0rem"
+                >
+                  <div class="s-80">
+                    Please check back later or
+                  </div>
+
+                  <zi-button
+                    auto
+                    @click="goSearch"
+                  >
+                    <span> Try search </span>
+                  </zi-button>
+                </div>
+              </div>
+            </zi-note>
           </div>
 
-          <div style="border: 1px solid #fafafa; margin: 1rem 0rem;" />
+          <div v-else>
+            <div>
+              <profile-section
+                :author-data="authorData"
+                :user-data="userData"
+                :tab="tab"
+                @activeView="activeView"
+              />
+            </div>
 
-          <div v-if="active === 'About'">
-            <about-section :author-data="authorData" />
-          </div>
+            <div style="border: 1px solid #fafafa; margin: 1rem 0rem;" />
 
-          <div v-else-if="active === 'Collection'">
-            <app-loader v-if="categoriesLoading" />
-            <collection-section
-              v-else
-              :collection="categories"
-              :author="username"
-            />
+            <div v-if="active === 'About'">
+              <about-section :author-data="authorData" />
+            </div>
+
+            <div v-else-if="active === 'Collection'">
+              <app-loader v-if="categoriesLoading" />
+              <collection-section
+                v-else
+                :collection="categories"
+                :author="username"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -59,7 +92,8 @@ export default {
     authorData: {},
     categories: [],
     categoriesLoading: true,
-    tab: "About"
+    tab: "About",
+    userNotFound: false
   }),
   computed: {
     ...mapGetters([
@@ -100,8 +134,8 @@ export default {
 
           this.loading = false
         } else {
-          this.$Toast.warning("Sorry, nothing found for user")
-          this.$router.push("/")
+          this.loading = false
+          this.userNotFound = true
         }
       }
     }
@@ -109,6 +143,9 @@ export default {
   methods: {
     activeView (view) {
       this.active = view
+    },
+    goSearch () {
+      this.$router.push("/search")
     }
   }
 }
