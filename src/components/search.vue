@@ -2,7 +2,7 @@
   <div>
     <div class="input-area">
       <zi-input
-        id="input"
+        id="search-input"
         v-model="data"
         :placeholder="placeholder"
         class="search-input"
@@ -43,15 +43,17 @@ export default {
       data: ""
     }
   },
-  created () {
-    this.data = this.query
-  },
   mounted () {
-    document.getElementById("input").addEventListener("keyup", (event) => {
+    this.data = this.query || this.$store.getters.search
+
+    document.getElementById("search-input").addEventListener("keyup", (event) => {
       if (event.key === "Enter" || (event.keyCode === 13)) {
         this.search()
       }
     })
+  },
+  deforeDestroy () {
+    document.getElementById("search-input").removeEventListener()
   },
   methods: {
     search () {

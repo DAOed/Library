@@ -12,6 +12,9 @@ export default {
   editItem (state, payload) {
     state.editItem = payload
   },
+  search (state, payload) {
+    state.search = payload
+  },
 
   theme (state, payload) {
     state.theme = payload

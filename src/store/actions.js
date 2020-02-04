@@ -16,6 +16,9 @@ export default {
   editItem ({ commit }, payload) {
     commit("editItem", payload)
   },
+  search ({ commit }, payload) {
+    commit("search", payload)
+  },
   async theme ({ commit, state }, payload = {}) {
     const { mode, auto } = payload
     if (auto) {

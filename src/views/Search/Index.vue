@@ -58,13 +58,17 @@ export default {
     loading: false
   }),
   methods: {
-    async search (e) {
-      this.loading = true
-      let data = await searchAccount(e)
-      data = data.results || []
+    async search (query) {
+      if (query) {
+        this.loading = true
+        this.$store.dispatch("search", query)
 
-      this.accounts = schemeAccounts(data)
-      this.loading = false
+        let data = await searchAccount(query)
+        data = data.results || []
+
+        this.accounts = schemeAccounts(data)
+        this.loading = false
+      }
     }
   }
 }

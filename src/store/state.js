@@ -5,5 +5,6 @@ export default {
   settings: {},
   profileData: {},
   docStats: {},
-  editItem: {}
+  editItem: {},
+  search: ""
 }
