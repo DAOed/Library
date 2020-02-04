@@ -41,7 +41,11 @@
                 :author-data="authorData"
                 :user-data="userData"
                 :tab="tab"
+                :following-list="followingList"
+                :muted-list="mutedList"
                 @activeView="activeView"
+                @setFollowingList="setFollowingList"
+                @setMutedList="setMutedList"
               />
             </div>
 
@@ -59,6 +63,21 @@
                 :author="username"
               />
             </div>
+
+            <div v-else-if="active === 'Following' || active === 'Muted'">
+              <app-loader v-if="peopleLoading" />
+              <people-section
+                v-else
+                :author-data="authorData"
+                :user-data="userData"
+                :tab="active"
+                :author="username"
+                :following-list="followingList"
+                :muted-list="mutedList"
+                @setFollowingList="setFollowingList"
+                @setMutedList="setMutedList"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -68,13 +87,15 @@
 
 <script>
 
-import { getPublicFile, getDocStats } from "@lib/utils"
+import { getPublicFile, getDocStats, loadRelations } from "@lib/utils"
 
 import ProfileSection from "./Profile"
 import AboutSection from "./About"
+import PeopleSection from "./People"
 
 import AppLoader from "@components/loader"
 import CollectionSection from "@components/collection"
+
 import { mapGetters } from "vuex"
 import { PRERENDER } from "@constants"
 
@@ -83,6 +104,7 @@ export default {
   components: {
     ProfileSection,
     AboutSection,
+    PeopleSection,
     CollectionSection,
     AppLoader
   },
@@ -92,8 +114,11 @@ export default {
     authorData: {},
     categories: [],
     categoriesLoading: true,
+    peopleLoading: false,
     tab: "About",
-    userNotFound: false
+    userNotFound: false,
+    followingList: [],
+    mutedList: []
   }),
   computed: {
     ...mapGetters([
@@ -133,6 +158,11 @@ export default {
           }
 
           this.loading = false
+
+          this.followingList = await loadRelations(this.authorData.username, "following") || []
+          this.mutedList = await loadRelations(this.authorData.username, "muted") || []
+
+          this.peopleLoading = false
         } else {
           this.loading = false
           this.userNotFound = true
@@ -146,6 +176,12 @@ export default {
     },
     goSearch () {
       this.$router.push("/search")
+    },
+    setFollowingList (d) {
+      if (this.userData.username === this.authorData.username) this.followingList = d
+    },
+    setMutedList (d) {
+      if (this.userData.username === this.authorData.username) this.mutedList = d
     }
   }
 }
