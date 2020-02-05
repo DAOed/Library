@@ -239,5 +239,9 @@ export default [
         }
       ]
     }
+  },
+  {
+    path: "*",
+    redirect: "/"
   }
 ]
